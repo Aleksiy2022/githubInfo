@@ -1,0 +1,32 @@
+.container {
+    box-sizing: border-box;
+    margin: auto;
+    padding: 60px 80px 70px 80px;
+    width: 660px;
+    min-height: 195px;
+    background-color: #C4C4C4;
+}
+
+.input-area {
+    padding: 5px 13px;
+    min-width: 500px;
+    min-height: 60px;
+    font-size: 30px;
+}
+
+.repository-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.repository-list--item {
+    display: flex;
+    padding: 5px 13px;
+    min-width: 500px;
+    min-height: 44px;
+    background-color: #E3E3E3;
+    border: 2px solid #000000;
+    align-items: center;
+    font-size: 24px;
+}
