@@ -5,18 +5,45 @@ class View {
     this.container = this.createElement('div', 'container')
     this.input = this.createElement('input', 'input-area')
     this.repositories = this.createElement('ul', 'repository-list')
-    this.currentRepositories = document.querySelectorAll('.repository-list--itemt')
+    this.savedRepositories = this.createElement('ul', 'saved-repositories--list')
+    this.savedRepo = this.createElement('li', 'saved-repository-list--item')
+    this.delButton = this.createElement('button', 'del-button')
+    this.img = this.createElement('img', 'image')
+    this.img.src = 'icons8-крестик-48.png'
 
     this.body.append(this.main)
     this.main.append(this.container)
     this.container.append(this.input)
     this.container.append(this.repositories)
+    this.container.append(this.savedRepositories)
+    this.delButton.append(this.img)
+
+    this.body.addEventListener('click', (e) => {
+      if (e.target.parentElement.parentElement.classList.contains('saved-repository-list--item')) {
+        e.target.parentElement.parentElement.remove()
+      }
+    })
   }
 
   createElement(tagName, className) {
     const element = document.createElement(tagName)
     if (className) element.classList.add(className)
     return element
+  }
+
+  createSavedRepoView(e, repo) {
+    let savedRepoClone = this.savedRepo.cloneNode(true)
+    let buttonClone = this.delButton.cloneNode(true)
+    savedRepoClone.insertAdjacentHTML(
+        'afterbegin',
+        `
+            <span>Name: ${repo.name}</span>
+            <span>Owner: ${repo.owner.login}</span>
+            <span>Stars: ${repo.stargazers_count}</span>
+        `
+    )
+    savedRepoClone.append(buttonClone)
+    this.savedRepositories.append(savedRepoClone)
   }
 
   clearSearhedData() {
@@ -27,6 +54,7 @@ class View {
     let fragment = document.createDocumentFragment()
     let createReposPromises = repoData.map(async (repo) => {
       let newRepo = this.createElement('li', 'repository-list--item')
+      newRepo.addEventListener('click', e => this.createSavedRepoView(e, repo))
       newRepo.textContent = repo.name
       return newRepo
     })
@@ -42,9 +70,7 @@ class View {
 class Search {
   constructor(view) {
     this.view = view
-
     this.debouncedSearch = this.debounce(this.searchRepositories.bind(this), 500)
-
     this.view.input.addEventListener('keyup', (e) => {
       const query = e.target.value
       this.debouncedSearch(query)
@@ -52,7 +78,8 @@ class Search {
   }
 
   async searchRepositories(query) {
-    if (!query) {
+    if (!query || query.trim().length === 0) {
+      console.log('Пустой запрос на поиск')
       this.view.clearSearhedData()
       return
     }

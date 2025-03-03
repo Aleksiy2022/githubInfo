@@ -30,3 +30,40 @@
     align-items: center;
     font-size: 24px;
 }
+
+.repository-list--item:hover {
+    background-color: #65CDF9;
+    cursor: pointer;
+}
+
+.saved-repositories--list {
+    margin: 0;
+    margin-top: 45px;
+    min-width: 500px;
+    padding: 0;
+    list-style: none;
+    font-size: 24px;
+}
+
+.saved-repository-list--item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
+    padding: 5px 13px;
+    background: #E27BEB;
+    border: 1px solid #000000;
+}
+
+.del-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+    border: none;
+    background-color: #E27BEB;
+}
+
+.del-button:hover {
+    cursor: pointer;
+}
